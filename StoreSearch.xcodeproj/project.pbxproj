@@ -21,6 +21,7 @@
 		D2B2D6C618D0DB84007E64ED /* StoreSearchTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D2B2D6C518D0DB84007E64ED /* StoreSearchTests.m */; };
 		D2B2D6D218D0F5E7007E64ED /* SearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2B2D6D018D0F5E7007E64ED /* SearchViewController.m */; };
 		D2B2D6D318D0F5E7007E64ED /* SearchViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D2B2D6D118D0F5E7007E64ED /* SearchViewController.xib */; };
+		D2B2D6D618D117D0007E64ED /* SearchResult.m in Sources */ = {isa = PBXBuildFile; fileRef = D2B2D6D518D117D0007E64ED /* SearchResult.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,6 +54,8 @@
 		D2B2D6CF18D0F5E7007E64ED /* SearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchViewController.h; sourceTree = "<group>"; };
 		D2B2D6D018D0F5E7007E64ED /* SearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchViewController.m; sourceTree = "<group>"; };
 		D2B2D6D118D0F5E7007E64ED /* SearchViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SearchViewController.xib; sourceTree = "<group>"; };
+		D2B2D6D418D117D0007E64ED /* SearchResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchResult.h; sourceTree = "<group>"; };
+		D2B2D6D518D117D0007E64ED /* SearchResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchResult.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -115,6 +118,8 @@
 				D2B2D6A918D0DB84007E64ED /* AppDelegate.h */,
 				D2B2D6AA18D0DB84007E64ED /* AppDelegate.m */,
 				D2B2D6B218D0DB84007E64ED /* Images.xcassets */,
+				D2B2D6D418D117D0007E64ED /* SearchResult.h */,
+				D2B2D6D518D117D0007E64ED /* SearchResult.m */,
 				D2B2D6CF18D0F5E7007E64ED /* SearchViewController.h */,
 				D2B2D6D018D0F5E7007E64ED /* SearchViewController.m */,
 				D2B2D6D118D0F5E7007E64ED /* SearchViewController.xib */,
@@ -251,6 +256,7 @@
 			files = (
 				D2B2D6AB18D0DB84007E64ED /* AppDelegate.m in Sources */,
 				D2B2D6D218D0F5E7007E64ED /* SearchViewController.m in Sources */,
+				D2B2D6D618D117D0007E64ED /* SearchResult.m in Sources */,
 				D2B2D6A718D0DB84007E64ED /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
