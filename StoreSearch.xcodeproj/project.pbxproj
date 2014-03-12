@@ -13,14 +13,14 @@
 		D2B2D6A518D0DB84007E64ED /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D2B2D6A318D0DB84007E64ED /* InfoPlist.strings */; };
 		D2B2D6A718D0DB84007E64ED /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = D2B2D6A618D0DB84007E64ED /* main.m */; };
 		D2B2D6AB18D0DB84007E64ED /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D2B2D6AA18D0DB84007E64ED /* AppDelegate.m */; };
-		D2B2D6AE18D0DB84007E64ED /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D2B2D6AC18D0DB84007E64ED /* Main.storyboard */; };
-		D2B2D6B118D0DB84007E64ED /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2B2D6B018D0DB84007E64ED /* ViewController.m */; };
 		D2B2D6B318D0DB84007E64ED /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D2B2D6B218D0DB84007E64ED /* Images.xcassets */; };
 		D2B2D6BA18D0DB84007E64ED /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2B2D6B918D0DB84007E64ED /* XCTest.framework */; };
 		D2B2D6BB18D0DB84007E64ED /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2B2D69A18D0DB84007E64ED /* Foundation.framework */; };
 		D2B2D6BC18D0DB84007E64ED /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2B2D69E18D0DB84007E64ED /* UIKit.framework */; };
 		D2B2D6C418D0DB84007E64ED /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D2B2D6C218D0DB84007E64ED /* InfoPlist.strings */; };
 		D2B2D6C618D0DB84007E64ED /* StoreSearchTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D2B2D6C518D0DB84007E64ED /* StoreSearchTests.m */; };
+		D2B2D6D218D0F5E7007E64ED /* SearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2B2D6D018D0F5E7007E64ED /* SearchViewController.m */; };
+		D2B2D6D318D0F5E7007E64ED /* SearchViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D2B2D6D118D0F5E7007E64ED /* SearchViewController.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,15 +44,15 @@
 		D2B2D6A818D0DB84007E64ED /* StoreSearch-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "StoreSearch-Prefix.pch"; sourceTree = "<group>"; };
 		D2B2D6A918D0DB84007E64ED /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		D2B2D6AA18D0DB84007E64ED /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		D2B2D6AD18D0DB84007E64ED /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		D2B2D6AF18D0DB84007E64ED /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		D2B2D6B018D0DB84007E64ED /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		D2B2D6B218D0DB84007E64ED /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		D2B2D6B818D0DB84007E64ED /* StoreSearchTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = StoreSearchTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D2B2D6B918D0DB84007E64ED /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		D2B2D6C118D0DB84007E64ED /* StoreSearchTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "StoreSearchTests-Info.plist"; sourceTree = "<group>"; };
 		D2B2D6C318D0DB84007E64ED /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		D2B2D6C518D0DB84007E64ED /* StoreSearchTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = StoreSearchTests.m; sourceTree = "<group>"; };
+		D2B2D6CF18D0F5E7007E64ED /* SearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchViewController.h; sourceTree = "<group>"; };
+		D2B2D6D018D0F5E7007E64ED /* SearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchViewController.m; sourceTree = "<group>"; };
+		D2B2D6D118D0F5E7007E64ED /* SearchViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SearchViewController.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -114,10 +114,10 @@
 			children = (
 				D2B2D6A918D0DB84007E64ED /* AppDelegate.h */,
 				D2B2D6AA18D0DB84007E64ED /* AppDelegate.m */,
-				D2B2D6AC18D0DB84007E64ED /* Main.storyboard */,
-				D2B2D6AF18D0DB84007E64ED /* ViewController.h */,
-				D2B2D6B018D0DB84007E64ED /* ViewController.m */,
 				D2B2D6B218D0DB84007E64ED /* Images.xcassets */,
+				D2B2D6CF18D0F5E7007E64ED /* SearchViewController.h */,
+				D2B2D6D018D0F5E7007E64ED /* SearchViewController.m */,
+				D2B2D6D118D0F5E7007E64ED /* SearchViewController.xib */,
 				D2B2D6A118D0DB84007E64ED /* Supporting Files */,
 			);
 			path = StoreSearch;
@@ -230,7 +230,7 @@
 			files = (
 				D2B2D6B318D0DB84007E64ED /* Images.xcassets in Resources */,
 				D2B2D6A518D0DB84007E64ED /* InfoPlist.strings in Resources */,
-				D2B2D6AE18D0DB84007E64ED /* Main.storyboard in Resources */,
+				D2B2D6D318D0F5E7007E64ED /* SearchViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -249,8 +249,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D2B2D6B118D0DB84007E64ED /* ViewController.m in Sources */,
 				D2B2D6AB18D0DB84007E64ED /* AppDelegate.m in Sources */,
+				D2B2D6D218D0F5E7007E64ED /* SearchViewController.m in Sources */,
 				D2B2D6A718D0DB84007E64ED /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -280,14 +280,6 @@
 				D2B2D6A418D0DB84007E64ED /* en */,
 			);
 			name = InfoPlist.strings;
-			sourceTree = "<group>";
-		};
-		D2B2D6AC18D0DB84007E64ED /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				D2B2D6AD18D0DB84007E64ED /* Base */,
-			);
-			name = Main.storyboard;
 			sourceTree = "<group>";
 		};
 		D2B2D6C218D0DB84007E64ED /* InfoPlist.strings */ = {
