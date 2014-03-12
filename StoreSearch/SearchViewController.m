@@ -8,6 +8,10 @@
 
 #import "SearchViewController.h"
 #import "SearchResult.h"
+#import "SearchResultCell.h"
+
+static NSString * const SearchResultCellIdentifier = @"SearchResultCell";
+static NSString * const NothingFoundCellIdentifier = @"NothingFoundCell";
 
 @interface SearchViewController () <UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate>
 @property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
@@ -32,6 +36,13 @@
 {
   [super viewDidLoad];
   self.tableView.contentInset = UIEdgeInsetsMake(64.0f, 0.0f, 0.0f, 0.0f);
+  
+  UINib *cellNib = [UINib nibWithNibName:SearchResultCellIdentifier bundle:nil];
+  [self.tableView registerNib:cellNib forCellReuseIdentifier:SearchResultCellIdentifier];
+  cellNib = [UINib nibWithNibName:NothingFoundCellIdentifier bundle:nil];
+  [self.tableView registerNib:cellNib forCellReuseIdentifier:NothingFoundCellIdentifier];
+  
+  self.tableView.rowHeight = 80.0f;
 }
 
 - (void)didReceiveMemoryWarning
@@ -55,23 +66,15 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-  static NSString *CellIdentifier = @"SearchResultCell";
-  UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-  
-  if (!cell) {
-    cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
-  }
-  
   if ([_searchResults count] == 0) {
-    cell.textLabel.text = @"(Nothing found)";
-    cell.detailTextLabel.text = @"";
+    return [tableView dequeueReusableCellWithIdentifier:NothingFoundCellIdentifier forIndexPath:indexPath];
   } else {
+    SearchResultCell *cell = (SearchResultCell *)[tableView dequeueReusableCellWithIdentifier:SearchResultCellIdentifier forIndexPath:indexPath];
     SearchResult *searchResult = _searchResults[indexPath.row];
-    cell.textLabel.text = searchResult.name;
-    cell.detailTextLabel.text = searchResult.artistName;
+    cell.nameLabel.text = searchResult.name;
+    cell.artistNameLabel.text = searchResult.artistName;
+    return cell;
   }
-  
-  return cell;
 }
 
 #pragma mark - UITableViewDelegate
