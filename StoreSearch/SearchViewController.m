@@ -27,7 +27,7 @@ static NSString * const NothingFoundCellIdentifier = @"NothingFoundCell";
 {
   self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
   if (self) {
-    // Custom initialization
+  // Custom initialization
   }
   return self;
 }
@@ -43,6 +43,8 @@ static NSString * const NothingFoundCellIdentifier = @"NothingFoundCell";
   [self.tableView registerNib:cellNib forCellReuseIdentifier:NothingFoundCellIdentifier];
   
   self.tableView.rowHeight = 80.0f;
+  
+  [self.searchBar becomeFirstResponder];
 }
 
 - (void)didReceiveMemoryWarning
@@ -56,24 +58,24 @@ static NSString * const NothingFoundCellIdentifier = @"NothingFoundCell";
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
   if (!_searchResults) {
-    return 0;
+  return 0;
   } else if ([_searchResults count] == 0) {
-    return 1;
+  return 1;
   } else {
-    return [_searchResults count];
+  return [_searchResults count];
   }
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
   if ([_searchResults count] == 0) {
-    return [tableView dequeueReusableCellWithIdentifier:NothingFoundCellIdentifier forIndexPath:indexPath];
+  return [tableView dequeueReusableCellWithIdentifier:NothingFoundCellIdentifier forIndexPath:indexPath];
   } else {
-    SearchResultCell *cell = (SearchResultCell *)[tableView dequeueReusableCellWithIdentifier:SearchResultCellIdentifier forIndexPath:indexPath];
-    SearchResult *searchResult = _searchResults[indexPath.row];
-    cell.nameLabel.text = searchResult.name;
-    cell.artistNameLabel.text = searchResult.artistName;
-    return cell;
+  SearchResultCell *cell = (SearchResultCell *)[tableView dequeueReusableCellWithIdentifier:SearchResultCellIdentifier forIndexPath:indexPath];
+  SearchResult *searchResult = _searchResults[indexPath.row];
+  cell.nameLabel.text = searchResult.name;
+  cell.artistNameLabel.text = searchResult.artistName;
+  return cell;
   }
 }
 
@@ -82,9 +84,9 @@ static NSString * const NothingFoundCellIdentifier = @"NothingFoundCell";
 - (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
   if ([_searchResults count] == 0) {
-    return nil;
+  return nil;
   } else {
-    return  indexPath;
+  return  indexPath;
   }
 }
 
@@ -101,12 +103,12 @@ static NSString * const NothingFoundCellIdentifier = @"NothingFoundCell";
   _searchResults = [NSMutableArray arrayWithCapacity:10];
   
   if (![[searchBar.text lowercaseString] isEqualToString:@"justin bieber"]) {
-    for (int i = 0; i < 3; i++) {
-      SearchResult *searchResult = [SearchResult new];
-      searchResult.name = [NSString stringWithFormat:@"Fake Result %d for", i];
-      searchResult.artistName = searchBar.text;
-      [_searchResults addObject:searchResult];
-    }
+  for (int i = 0; i < 3; i++) {
+    SearchResult *searchResult = [SearchResult new];
+    searchResult.name = [NSString stringWithFormat:@"Fake Result %d for", i];
+    searchResult.artistName = searchBar.text;
+    [_searchResults addObject:searchResult];
+  }
   }
   
   [self.tableView reloadData];
