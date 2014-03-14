@@ -251,10 +251,7 @@ static NSString * const LoadingCellIdentifier = @"LoadingCell";
   
   controller.searchResult = _searchResults[indexPath.row];
   
-  controller.view.frame = self.view.frame;
-  [self.view addSubview:controller.view];
-  [self addChildViewController:controller];
-  [controller didMoveToParentViewController:self];
+  [controller presentInParentViewController:self];
 }
 
 - (NSURL *)urlWithSearchText:(NSString *)searchText category:(NSInteger)category
