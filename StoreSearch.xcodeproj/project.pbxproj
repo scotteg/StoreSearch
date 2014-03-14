@@ -30,6 +30,8 @@
 		D2C6DAF118D3432800D0729B /* DetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2C6DAEF18D3432800D0729B /* DetailViewController.m */; };
 		D2C6DAF218D3432800D0729B /* DetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D2C6DAF018D3432800D0729B /* DetailViewController.xib */; };
 		D2C6DAF518D37F9F00D0729B /* GradientView.m in Sources */ = {isa = PBXBuildFile; fileRef = D2C6DAF418D37F9F00D0729B /* GradientView.m */; };
+		D2C6DAF918D39DF000D0729B /* LandscapeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2C6DAF718D39DF000D0729B /* LandscapeViewController.m */; };
+		D2C6DAFA18D39DF000D0729B /* LandscapeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D2C6DAF818D39DF000D0729B /* LandscapeViewController.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -75,6 +77,9 @@
 		D2C6DAF018D3432800D0729B /* DetailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DetailViewController.xib; sourceTree = "<group>"; };
 		D2C6DAF318D37F9F00D0729B /* GradientView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GradientView.h; sourceTree = "<group>"; };
 		D2C6DAF418D37F9F00D0729B /* GradientView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GradientView.m; sourceTree = "<group>"; };
+		D2C6DAF618D39DF000D0729B /* LandscapeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LandscapeViewController.h; sourceTree = "<group>"; };
+		D2C6DAF718D39DF000D0729B /* LandscapeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LandscapeViewController.m; sourceTree = "<group>"; };
+		D2C6DAF818D39DF000D0729B /* LandscapeViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LandscapeViewController.xib; sourceTree = "<group>"; };
 		F023B12195A84B6A8EE5F65B /* Pods-StoreSearch.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StoreSearch.xcconfig"; path = "Pods/Pods-StoreSearch.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -146,6 +151,9 @@
 				D2C6DAF318D37F9F00D0729B /* GradientView.h */,
 				D2C6DAF418D37F9F00D0729B /* GradientView.m */,
 				D2B2D6B218D0DB84007E64ED /* Images.xcassets */,
+				D2C6DAF618D39DF000D0729B /* LandscapeViewController.h */,
+				D2C6DAF718D39DF000D0729B /* LandscapeViewController.m */,
+				D2C6DAF818D39DF000D0729B /* LandscapeViewController.xib */,
 				D2B2D6DE18D30118007E64ED /* LoadingCell.xib */,
 				D2B2D6DC18D12833007E64ED /* NothingFoundCell.xib */,
 				D2B2D6D418D117D0007E64ED /* SearchResult.h */,
@@ -274,6 +282,7 @@
 				D2B2D6DF18D30118007E64ED /* LoadingCell.xib in Resources */,
 				D2B2D6D818D11C30007E64ED /* SearchResultCell.xib in Resources */,
 				D2B2D6DD18D12833007E64ED /* NothingFoundCell.xib in Resources */,
+				D2C6DAFA18D39DF000D0729B /* LandscapeViewController.xib in Resources */,
 				D2B2D6D318D0F5E7007E64ED /* SearchViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -332,6 +341,7 @@
 				D2B2D6D618D117D0007E64ED /* SearchResult.m in Sources */,
 				D2B2D6A718D0DB84007E64ED /* main.m in Sources */,
 				D2C6DAF518D37F9F00D0729B /* GradientView.m in Sources */,
+				D2C6DAF918D39DF000D0729B /* LandscapeViewController.m in Sources */,
 				D2C6DAF118D3432800D0729B /* DetailViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

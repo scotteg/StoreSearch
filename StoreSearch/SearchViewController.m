@@ -11,6 +11,7 @@
 #import "SearchResultCell.h"
 #import <AFNetworking/AFNetworking.h>
 #import "DetailViewController.h"
+#import "LandscapeViewController.h"
 
 static NSString * const SearchResultCellIdentifier = @"SearchResultCell";
 static NSString * const NothingFoundCellIdentifier = @"NothingFoundCell";
@@ -27,6 +28,9 @@ static NSString * const LoadingCellIdentifier = @"LoadingCell";
   NSMutableArray *_searchResults;
   BOOL _isLoading;
   NSOperationQueue *_queue;
+  LandscapeViewController *_landscapeViewController;
+  UIStatusBarStyle _statusBarStyle;
+  DetailViewController *_detailViewController;
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -43,6 +47,7 @@ static NSString * const LoadingCellIdentifier = @"LoadingCell";
   [super viewDidLoad];
   self.tableView.contentInset = UIEdgeInsetsMake(108.0f, 0.0f, 0.0f, 0.0f); // Search bar 64pt, segmented control 44pt
   self.tableView.rowHeight = 80.0f;
+  _statusBarStyle = UIStatusBarStyleDefault;
   
   UINib *cellNib = [UINib nibWithNibName:SearchResultCellIdentifier bundle:nil];
   [self.tableView registerNib:cellNib forCellReuseIdentifier:SearchResultCellIdentifier];
@@ -52,6 +57,69 @@ static NSString * const LoadingCellIdentifier = @"LoadingCell";
   [self.tableView registerNib:cellNib forCellReuseIdentifier:LoadingCellIdentifier];
   
   [self.searchBar becomeFirstResponder];
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+  return _statusBarStyle;
+}
+
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+  [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
+  
+  if (UIInterfaceOrientationIsPortrait(toInterfaceOrientation)) {
+    [self hideLandscapeViewWithDuration:duration];
+  } else {
+    [self showLandscapeViewWithDuration:duration];
+  }
+}
+
+- (void)showLandscapeViewWithDuration:(NSTimeInterval)duration
+{
+  if (!_landscapeViewController) {
+    _landscapeViewController = [[LandscapeViewController alloc] initWithNibName:@"LandscapeViewController" bundle:nil];
+    _landscapeViewController.view.frame = self.view.bounds;
+    _landscapeViewController.view.alpha = 0.0f;
+    
+    [self.view addSubview:_landscapeViewController.view];
+    [self addChildViewController:_landscapeViewController];
+    
+    [UIView animateWithDuration:duration animations:^{
+      _landscapeViewController.view.alpha = 1.0f;
+      
+      _statusBarStyle = UIStatusBarStyleLightContent;
+      [self setNeedsStatusBarAppearanceUpdate];
+    } completion:^(BOOL finished) {
+      [_landscapeViewController didMoveToParentViewController:self];
+    }];
+    
+    [self.searchBar resignFirstResponder];
+    [_detailViewController dismissFromParentViewControllerWithAnimationType:DetailViewControllerAnimationTypeFade];
+    _detailViewController = nil;
+  }
+}
+
+- (void)hideLandscapeViewWithDuration:(NSTimeInterval)duration
+{
+  if (_landscapeViewController) {
+    [_landscapeViewController willMoveToParentViewController:nil];
+    
+    [UIView animateWithDuration:duration animations:^{
+      _landscapeViewController.view.alpha = 0.0f;
+      
+      _statusBarStyle = UIStatusBarStyleDefault;
+      [self setNeedsStatusBarAppearanceUpdate];
+    } completion:^(BOOL finished) {
+      [_landscapeViewController.view removeFromSuperview];
+      [_landscapeViewController removeFromParentViewController];
+      _landscapeViewController = nil;
+    }];
+    
+    if (!_searchResults) {
+      [self.searchBar becomeFirstResponder];
+    }
+  }
 }
 
 - (void)didReceiveMemoryWarning
@@ -247,11 +315,11 @@ static NSString * const LoadingCellIdentifier = @"LoadingCell";
   [self.searchBar resignFirstResponder];
   [tableView deselectRowAtIndexPath:indexPath animated:YES];
   
-  DetailViewController *controller = [[DetailViewController alloc] initWithNibName:@"DetailViewController" bundle:nil];
+  _detailViewController = [[DetailViewController alloc] initWithNibName:@"DetailViewController" bundle:nil];
   
-  controller.searchResult = _searchResults[indexPath.row];
+  _detailViewController.searchResult = _searchResults[indexPath.row];
   
-  [controller presentInParentViewController:self];
+  [_detailViewController presentInParentViewController:self];
 }
 
 - (NSURL *)urlWithSearchText:(NSString *)searchText category:(NSInteger)category

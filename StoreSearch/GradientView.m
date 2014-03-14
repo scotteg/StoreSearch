@@ -14,6 +14,7 @@
 {
   if ((self = [super initWithFrame:frame])) {
     self.backgroundColor = [UIColor clearColor];
+    self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
   }
   return self;
 }
