@@ -19,6 +19,7 @@ static NSString * const LoadingCellIdentifier = @"LoadingCell";
 @property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (assign, nonatomic) BOOL isLoading;
+@property (weak, nonatomic) IBOutlet UISegmentedControl *segmentedControl;
 @end
 
 @implementation SearchViewController
@@ -39,7 +40,7 @@ static NSString * const LoadingCellIdentifier = @"LoadingCell";
 - (void)viewDidLoad
 {
   [super viewDidLoad];
-  self.tableView.contentInset = UIEdgeInsetsMake(64.0f, 0.0f, 0.0f, 0.0f);
+  self.tableView.contentInset = UIEdgeInsetsMake(108.0f, 0.0f, 0.0f, 0.0f); // Search bar 64pt, segmented control 44pt
   
   UINib *cellNib = [UINib nibWithNibName:SearchResultCellIdentifier bundle:nil];
   [self.tableView registerNib:cellNib forCellReuseIdentifier:SearchResultCellIdentifier];
@@ -57,6 +58,45 @@ static NSString * const LoadingCellIdentifier = @"LoadingCell";
 {
   [super didReceiveMemoryWarning];
   // Dispose of any resources that can be recreated.
+}
+
+- (void)performSearch
+{
+  if ([self.searchBar.text length]) {
+    [self.searchBar resignFirstResponder];
+    [_queue cancelAllOperations];
+    
+    self.isLoading = YES;
+    
+    _searchResults = [NSMutableArray arrayWithCapacity:10];
+    
+    NSURL *url = [self urlWithSearchText:self.searchBar.text category:self.segmentedControl.selectedSegmentIndex];
+    NSURLRequest *request = [NSURLRequest requestWithURL:url];
+    
+    AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
+    operation.responseSerializer = [AFJSONResponseSerializer serializer];
+    [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+      [self parseDictionary:responseObject];
+      [_searchResults sortUsingSelector:@selector(compareArtistName:)];
+      self.isLoading = NO;
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+      if (operation.isCancelled) {
+        return;
+      }
+      
+      [self showNetworkError];
+      self.isLoading = NO;
+    }];
+    
+    [_queue addOperation:operation];
+  }
+}
+
+- (IBAction)segmentChanged:(UISegmentedControl *)sender
+{
+  if (_searchResults) {
+    [self performSearch];
+  }
 }
 
 - (void)setIsLoading:(BOOL)isLoading
@@ -245,10 +285,20 @@ static NSString * const LoadingCellIdentifier = @"LoadingCell";
   [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
-- (NSURL *)urlWithSearchText:(NSString *)searchText
+- (NSURL *)urlWithSearchText:(NSString *)searchText category:(NSInteger)category
 {
+  NSString *categoryName;
+  
+  switch (category) {
+    case 0: categoryName = @""; break;
+    case 1: categoryName = @"musicTrack"; break;
+    case 2: categoryName = @"software"; break;
+    case 3: categoryName = @"ebook"; break;
+  }
+  
   NSString *escapedSearchText = [searchText stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-  NSString *urlString = [NSString stringWithFormat:@"http://itunes.apple.com/search?term=%@&limit=200", escapedSearchText];
+  NSString *urlString = [NSString stringWithFormat:@"http://itunes.apple.com/search?term=%@&limit=200&entity=%@", escapedSearchText, categoryName];
+  NSLog(@"urlString: %@", urlString);
   NSURL *url = [NSURL URLWithString:urlString];
   return url;
 }
@@ -257,34 +307,7 @@ static NSString * const LoadingCellIdentifier = @"LoadingCell";
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
 {
-  if ([searchBar.text length]) {
-    [searchBar resignFirstResponder];
-    [_queue cancelAllOperations];
-    
-    self.isLoading = YES;
-    
-    _searchResults = [NSMutableArray arrayWithCapacity:10];
-    
-    NSURL *url = [self urlWithSearchText:searchBar.text];
-    NSURLRequest *request = [NSURLRequest requestWithURL:url];
-    
-    AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
-    operation.responseSerializer = [AFJSONResponseSerializer serializer];
-    [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-      [self parseDictionary:responseObject];
-      [_searchResults sortUsingSelector:@selector(compareArtistName:)];
-      self.isLoading = NO;
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-      if (operation.isCancelled) {
-        return;
-      }
-      
-      [self showNetworkError];
-      self.isLoading = NO;
-    }];
-    
-    [_queue addOperation:operation];
-  }
+  [self performSearch];
 }
 
 - (UIBarPosition)positionForBar:(id <UIBarPositioning>)bar
