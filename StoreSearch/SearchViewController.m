@@ -248,6 +248,9 @@ static NSString * const LoadingCellIdentifier = @"LoadingCell";
   
   DetailViewController *controller = [[DetailViewController alloc] initWithNibName:@"DetailViewController" bundle:nil];
   
+  controller.searchResult = _searchResults[indexPath.row];
+  
+  controller.view.frame = self.view.frame;
   [self.view addSubview:controller.view];
   [self addChildViewController:controller];
   [controller didMoveToParentViewController:self];

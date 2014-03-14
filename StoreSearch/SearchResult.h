@@ -23,4 +23,6 @@
 - (NSComparisonResult)compareName:(SearchResult *)other;
 - (NSComparisonResult)compareArtistName:(SearchResult *)other;
 
+- (NSString *)kindForDisplay;
+
 @end
