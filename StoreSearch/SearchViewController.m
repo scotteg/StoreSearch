@@ -9,6 +9,7 @@
 #import "SearchViewController.h"
 #import "SearchResult.h"
 #import "SearchResultCell.h"
+#import <AFNetworking/AFNetworking.h>
 
 static NSString * const SearchResultCellIdentifier = @"SearchResultCell";
 static NSString * const NothingFoundCellIdentifier = @"NothingFoundCell";
@@ -23,13 +24,14 @@ static NSString * const LoadingCellIdentifier = @"LoadingCell";
 @implementation SearchViewController
 {
   NSMutableArray *_searchResults;
+  NSOperationQueue *_queue;
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
   self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
   if (self) {
-  // Custom initialization
+    _queue = [NSOperationQueue new];
   }
   return self;
 }
@@ -61,38 +63,6 @@ static NSString * const LoadingCellIdentifier = @"LoadingCell";
 {
   _isLoading = isLoading;
   [self.tableView reloadData];
-}
-
-- (NSString *)performStoreRequestWithURL:(NSURL *)url
-{
-  NSError *error;
-  NSString *resultString = [NSString stringWithContentsOfURL:url encoding:NSUTF8StringEncoding error:&error];
-  
-  if (!resultString) {
-    NSLog(@"Download Error: %@", error);
-    return nil;
-  }
-  
-  return resultString;
-}
-
-- (NSDictionary *)parseJSON:(NSString *)jsonString
-{
-  NSData *data = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
-  NSError *error;
-  id resultObject = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
-  
-  if (!resultObject) {
-    NSLog(@"JSON Error: %@", error);
-    return nil;
-  }
-  
-  if (![resultObject isKindOfClass:[NSDictionary class]]) {
-    NSLog(@"JSON Error: Expected Dictionary");
-    return nil;
-  }
-  
-  return resultObject;
 }
 
 - (void)parseDictionary:(NSDictionary *)dictionary
@@ -289,42 +259,31 @@ static NSString * const LoadingCellIdentifier = @"LoadingCell";
 {
   if ([searchBar.text length]) {
     [searchBar resignFirstResponder];
+    [_queue cancelAllOperations];
     
     self.isLoading = YES;
     
     _searchResults = [NSMutableArray arrayWithCapacity:10];
     
-    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
-    dispatch_async(queue, ^{
-      NSURL *url = [self urlWithSearchText:searchBar.text];
-      NSString *jsonString = [self performStoreRequestWithURL:url];
-      
-      if (!jsonString) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-          [self showNetworkError];
-        });
-        
-        return;
-      }
-      
-      NSDictionary *dictionary = [self parseJSON:jsonString];
-      
-      if (!dictionary) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-          [self showNetworkError];
-        });
-        
-        return;
-      }
-      
-      NSLog(@"Dictionary '%@'", dictionary);
-      [self parseDictionary:dictionary];
+    NSURL *url = [self urlWithSearchText:searchBar.text];
+    NSURLRequest *request = [NSURLRequest requestWithURL:url];
+    
+    AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
+    operation.responseSerializer = [AFJSONResponseSerializer serializer];
+    [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+      [self parseDictionary:responseObject];
       [_searchResults sortUsingSelector:@selector(compareArtistName:)];
+      self.isLoading = NO;
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+      if (operation.isCancelled) {
+        return;
+      }
       
-      dispatch_async(dispatch_get_main_queue(), ^{
-        self.isLoading = NO;
-      });
-    });
+      [self showNetworkError];
+      self.isLoading = NO;
+    }];
+    
+    [_queue addOperation:operation];
   }
 }
 
