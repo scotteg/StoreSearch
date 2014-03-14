@@ -8,10 +8,14 @@
 
 #import <UIKit/UIKit.h>
 
+@class SearchResult;
+
 @interface SearchResultCell : UITableViewCell
 
 @property (weak, nonatomic) IBOutlet UIImageView *artworkImageView;
 @property (weak, nonatomic) IBOutlet UILabel *nameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *artistNameLabel;
+
+- (void)configureForSearchResult:(SearchResult *)searchResult;
 
 @end
