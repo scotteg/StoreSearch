@@ -25,6 +25,7 @@
 		D2B2D6D818D11C30007E64ED /* SearchResultCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D2B2D6D718D11C30007E64ED /* SearchResultCell.xib */; };
 		D2B2D6DB18D11F33007E64ED /* SearchResultCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D2B2D6DA18D11F33007E64ED /* SearchResultCell.m */; };
 		D2B2D6DD18D12833007E64ED /* NothingFoundCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D2B2D6DC18D12833007E64ED /* NothingFoundCell.xib */; };
+		D2B2D6DF18D30118007E64ED /* LoadingCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D2B2D6DE18D30118007E64ED /* LoadingCell.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -63,6 +64,7 @@
 		D2B2D6D918D11F33007E64ED /* SearchResultCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchResultCell.h; sourceTree = "<group>"; };
 		D2B2D6DA18D11F33007E64ED /* SearchResultCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchResultCell.m; sourceTree = "<group>"; };
 		D2B2D6DC18D12833007E64ED /* NothingFoundCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NothingFoundCell.xib; sourceTree = "<group>"; };
+		D2B2D6DE18D30118007E64ED /* LoadingCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoadingCell.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -135,6 +137,7 @@
 				D2B2D6D018D0F5E7007E64ED /* SearchViewController.m */,
 				D2B2D6D118D0F5E7007E64ED /* SearchViewController.xib */,
 				D2B2D6A118D0DB84007E64ED /* Supporting Files */,
+				D2B2D6DE18D30118007E64ED /* LoadingCell.xib */,
 			);
 			path = StoreSearch;
 			sourceTree = "<group>";
@@ -246,6 +249,7 @@
 			files = (
 				D2B2D6B318D0DB84007E64ED /* Images.xcassets in Resources */,
 				D2B2D6A518D0DB84007E64ED /* InfoPlist.strings in Resources */,
+				D2B2D6DF18D30118007E64ED /* LoadingCell.xib in Resources */,
 				D2B2D6D818D11C30007E64ED /* SearchResultCell.xib in Resources */,
 				D2B2D6DD18D12833007E64ED /* NothingFoundCell.xib in Resources */,
 				D2B2D6D318D0F5E7007E64ED /* SearchViewController.xib in Resources */,

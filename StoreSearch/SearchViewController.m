@@ -12,10 +12,12 @@
 
 static NSString * const SearchResultCellIdentifier = @"SearchResultCell";
 static NSString * const NothingFoundCellIdentifier = @"NothingFoundCell";
+static NSString * const LoadingCellIdentifier = @"LoadingCell";
 
 @interface SearchViewController () <UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate>
 @property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property (assign, nonatomic) BOOL isLoading;
 @end
 
 @implementation SearchViewController
@@ -41,6 +43,8 @@ static NSString * const NothingFoundCellIdentifier = @"NothingFoundCell";
   [self.tableView registerNib:cellNib forCellReuseIdentifier:SearchResultCellIdentifier];
   cellNib = [UINib nibWithNibName:NothingFoundCellIdentifier bundle:nil];
   [self.tableView registerNib:cellNib forCellReuseIdentifier:NothingFoundCellIdentifier];
+  cellNib = [UINib nibWithNibName:LoadingCellIdentifier bundle:nil];
+  [self.tableView registerNib:cellNib forCellReuseIdentifier:LoadingCellIdentifier];
   
   self.tableView.rowHeight = 80.0f;
   
@@ -51,6 +55,12 @@ static NSString * const NothingFoundCellIdentifier = @"NothingFoundCell";
 {
   [super didReceiveMemoryWarning];
   // Dispose of any resources that can be recreated.
+}
+
+- (void)setIsLoading:(BOOL)isLoading
+{
+  _isLoading = isLoading;
+  [self.tableView reloadData];
 }
 
 - (NSString *)performStoreRequestWithURL:(NSURL *)url
@@ -211,18 +221,25 @@ static NSString * const NothingFoundCellIdentifier = @"NothingFoundCell";
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-  if (!_searchResults) {
-  return 0;
+  if (self.isLoading) {
+    return 1;
+  } else if (!_searchResults) {
+    return 0;
   } else if ([_searchResults count] == 0) {
-  return 1;
+    return 1;
   } else {
-  return [_searchResults count];
+    return [_searchResults count];
   }
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-  if ([_searchResults count] == 0) {
+  if (self.isLoading) {
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:LoadingCellIdentifier forIndexPath:indexPath];
+    UIActivityIndicatorView *spinner = (UIActivityIndicatorView *)[cell viewWithTag:100];
+    [spinner startAnimating];
+    return cell;
+  } else if ([_searchResults count] == 0) {
     return [tableView dequeueReusableCellWithIdentifier:NothingFoundCellIdentifier forIndexPath:indexPath];
   } else {
     SearchResultCell *cell = (SearchResultCell *)[tableView dequeueReusableCellWithIdentifier:SearchResultCellIdentifier forIndexPath:indexPath];
@@ -246,7 +263,7 @@ static NSString * const NothingFoundCellIdentifier = @"NothingFoundCell";
 
 - (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-  if ([_searchResults count] == 0) {
+  if ([_searchResults count] == 0 || self.isLoading) {
   return nil;
   } else {
   return  indexPath;
@@ -261,7 +278,7 @@ static NSString * const NothingFoundCellIdentifier = @"NothingFoundCell";
 - (NSURL *)urlWithSearchText:(NSString *)searchText
 {
   NSString *escapedSearchText = [searchText stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-  NSString *urlString = [NSString stringWithFormat:@"http://itunes.apple.com/search?term=%@", escapedSearchText];
+  NSString *urlString = [NSString stringWithFormat:@"http://itunes.apple.com/search?term=%@&limit=200", escapedSearchText];
   NSURL *url = [NSURL URLWithString:urlString];
   return url;
 }
@@ -272,27 +289,42 @@ static NSString * const NothingFoundCellIdentifier = @"NothingFoundCell";
 {
   if ([searchBar.text length]) {
     [searchBar resignFirstResponder];
+    
+    self.isLoading = YES;
+    
     _searchResults = [NSMutableArray arrayWithCapacity:10];
     
-    NSURL *url = [self urlWithSearchText:searchBar.text];
-    NSString *jsonString = [self performStoreRequestWithURL:url];
-    
-    if (!jsonString) {
-      [self showNetworkError];
-      return;
-    }
-    
-    NSDictionary *dictionary = [self parseJSON:jsonString];
-    
-    if (!dictionary) {
-      [self showNetworkError];
-      return;
-    }
-    
-    NSLog(@"Dictionary '%@'", dictionary);
-    [self parseDictionary:dictionary];
-    [_searchResults sortUsingSelector:@selector(compareArtistName:)];
-    [self.tableView reloadData];
+    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    dispatch_async(queue, ^{
+      NSURL *url = [self urlWithSearchText:searchBar.text];
+      NSString *jsonString = [self performStoreRequestWithURL:url];
+      
+      if (!jsonString) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+          [self showNetworkError];
+        });
+        
+        return;
+      }
+      
+      NSDictionary *dictionary = [self parseJSON:jsonString];
+      
+      if (!dictionary) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+          [self showNetworkError];
+        });
+        
+        return;
+      }
+      
+      NSLog(@"Dictionary '%@'", dictionary);
+      [self parseDictionary:dictionary];
+      [_searchResults sortUsingSelector:@selector(compareArtistName:)];
+      
+      dispatch_async(dispatch_get_main_queue(), ^{
+        self.isLoading = NO;
+      });
+    });
   }
 }
 
