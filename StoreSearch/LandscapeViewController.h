@@ -10,4 +10,6 @@
 
 @interface LandscapeViewController : UIViewController
 
+@property (strong, nonatomic) NSArray *searchResults;
+
 @end

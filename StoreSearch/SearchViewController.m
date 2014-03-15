@@ -81,6 +81,7 @@ static NSString * const LoadingCellIdentifier = @"LoadingCell";
     _landscapeViewController = [[LandscapeViewController alloc] initWithNibName:@"LandscapeViewController" bundle:nil];
     _landscapeViewController.view.frame = self.view.bounds;
     _landscapeViewController.view.alpha = 0.0f;
+    _landscapeViewController.searchResults = _searchResults;
     
     [self.view addSubview:_landscapeViewController.view];
     [self addChildViewController:_landscapeViewController];
