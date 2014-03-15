@@ -11,6 +11,7 @@
 #import <AFNetworking/UIButton+AFNetworking.h>
 #import "UIImage+Resize.h"
 #import "Search.h"
+#import "DetailViewController.h"
 
 @interface LandscapeViewController () <UIScrollViewDelegate>
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
@@ -45,7 +46,16 @@
   
   if (_firstTime) {
     _firstTime = NO;
-    [self tileButtons];
+    
+    if (self.search) {
+      if (self.search.isLoading) {
+        [self showSpinner];
+      } else if ([self.search.searchResults count] == 0) {
+        [self showNothingFoundLabel];
+      } else {
+        [self tileButtons];
+      }
+    }
   }
 }
 
@@ -64,6 +74,31 @@
   }
 }
 
+- (void)showSpinner
+{
+  UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+  spinner.center = CGPointMake(CGRectGetMidX(self.scrollView.bounds) + 0.5f, CGRectGetMidY(self.scrollView.bounds) + 0.5f);
+  spinner.tag = 1000;
+  [self.view addSubview:spinner];
+  [spinner startAnimating];
+}
+
+- (void)searchResultsReceived
+{
+  [self hideSpinner];
+  
+  if ([self.search.searchResults count]) {
+    [self tileButtons];
+  } else {
+    [self showNothingFoundLabel];
+  }
+}
+
+- (void)hideSpinner
+{
+  [[self.view viewWithTag:1000] removeFromSuperview];
+}
+
 - (void)downloadImageForSearchResult:(SearchResult *)searchResult andPlaceOnButton:(UIButton *)button
 {
   NSURL *url = [NSURL URLWithString:searchResult.artworkURL60];
@@ -77,6 +112,21 @@
     UIImage *resizedImage = [unscaledImage resizedImageWithBounds:CGSizeMake(60.0f, 60.0f)];
     [weakButton setImage:resizedImage forState:UIControlStateNormal];
   } failure:nil];
+}
+
+- (void)showNothingFoundLabel
+{
+  UILabel *label = [[UILabel alloc] initWithFrame:CGRectZero];
+  label.text = @"Nothing Found";
+  label.backgroundColor = [UIColor clearColor];
+  label.textColor = [UIColor whiteColor];
+  [label sizeToFit];
+  CGRect rect = label.frame;
+  rect.size.width = ceilf(CGRectGetWidth(rect) / 2.0f) * 2.0f; // Tip: force x to be an even number: ceilf(x/2) * 2
+  rect.size.height = ceilf(CGRectGetHeight(rect) / 2.0f) * 2.0f;
+  label.frame = rect;
+  label.center = CGPointMake(CGRectGetMidX(self.scrollView.bounds), CGRectGetMidY(self.scrollView.bounds));
+  [self.view addSubview:label];
 }
 
 - (IBAction)pageChanged:(UIPageControl *)sender
@@ -118,6 +168,9 @@
     
     [self downloadImageForSearchResult:searchResult andPlaceOnButton:button];
     
+    button.tag = 2000 + index;
+    [button addTarget:self action:@selector(buttonPressed:) forControlEvents:UIControlEventTouchUpInside];
+    
     [self.scrollView addSubview:button];
     
     index++;
@@ -143,6 +196,14 @@
   
   self.pageControl.numberOfPages = numPages;
   self.pageControl.currentPage = 0;
+}
+
+- (void)buttonPressed:(UIButton *)sender
+{
+  DetailViewController *controller = [[DetailViewController alloc] initWithNibName:@"DetailViewController" bundle:nil];
+  SearchResult *searchResult = self.search.searchResults[sender.tag - 2000];
+  controller.searchResult = searchResult;
+  [controller presentInParentViewController:self];
 }
 
 #pragma mark - UIScrollViewDelegate

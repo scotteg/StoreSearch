@@ -16,5 +16,6 @@ typedef void(^SearchBlock)(BOOL success);
 @property (strong, nonatomic, readonly) NSMutableArray *searchResults;
 
 - (void)performSearchForText:(NSString *)text category:(NSInteger)category completion:(SearchBlock)block;
+- (void)showNetworkError;
 
 @end

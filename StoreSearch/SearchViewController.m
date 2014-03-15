@@ -125,10 +125,10 @@ static NSString * const LoadingCellIdentifier = @"LoadingCell";
   NSLog(@"Allocated %@", _search);
   
   [_search performSearchForText:self.searchBar.text category:self.segmentedControl.selectedSegmentIndex completion:^(BOOL success) {
-    if (!success) {
-      [self showNetworkError];
+    if (success) {
+      [_landscapeViewController searchResultsReceived];
+      [self.tableView reloadData];
     }
-    [self.tableView reloadData];
   }];
   
   [self.tableView reloadData];
@@ -140,12 +140,6 @@ static NSString * const LoadingCellIdentifier = @"LoadingCell";
   if (_search) {
     [self performSearch];
   }
-}
-
-- (void)showNetworkError
-{
-  UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Whoops..." message:@"There was an error reading from the iTunes Store. Please try again." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
-  [alertView show];
 }
 
 #pragma mark - UITableViewDataSource

@@ -26,6 +26,11 @@ static NSOperationQueue *queue = nil;
   }
 }
 
+- (void)dealloc
+{
+  NSLog(@"%s", __PRETTY_FUNCTION__);
+}
+
 - (void)performSearchForText:(NSString *)text category:(NSInteger)category completion:(SearchBlock)block;
 {
   if ([text length]) {
@@ -46,6 +51,8 @@ static NSOperationQueue *queue = nil;
       self.isLoading = NO;
       block(YES);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+      [self showNetworkError];
+      
       if (!operation.isCancelled) {
         self.isLoading = NO;
         block(NO);
@@ -56,9 +63,10 @@ static NSOperationQueue *queue = nil;
   }
 }
 
-- (void)dealloc
+- (void)showNetworkError
 {
-  NSLog(@"%s", __PRETTY_FUNCTION__);
+  UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Whoops..." message:@"There was an error reading from the iTunes Store. Please try again." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+  [alertView show];
 }
 
 - (NSURL *)urlWithSearchText:(NSString *)searchText category:(NSInteger)category

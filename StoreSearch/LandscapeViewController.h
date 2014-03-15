@@ -14,4 +14,6 @@
 
 @property (strong, nonatomic) Search *search;
 
+- (void)searchResultsReceived;
+
 @end
