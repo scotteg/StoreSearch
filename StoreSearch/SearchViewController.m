@@ -12,6 +12,7 @@
 #import <AFNetworking/AFNetworking.h>
 #import "DetailViewController.h"
 #import "LandscapeViewController.h"
+#import "Search.h"
 
 static NSString * const SearchResultCellIdentifier = @"SearchResultCell";
 static NSString * const NothingFoundCellIdentifier = @"NothingFoundCell";
@@ -25,21 +26,10 @@ static NSString * const LoadingCellIdentifier = @"LoadingCell";
 
 @implementation SearchViewController
 {
-  NSMutableArray *_searchResults;
-  BOOL _isLoading;
-  NSOperationQueue *_queue;
+  Search *_search;
   LandscapeViewController *_landscapeViewController;
   UIStatusBarStyle _statusBarStyle;
   DetailViewController *_detailViewController;
-}
-
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-  self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-  if (self) {
-    _queue = [NSOperationQueue new];
-  }
-  return self;
 }
 
 - (void)viewDidLoad
@@ -81,7 +71,7 @@ static NSString * const LoadingCellIdentifier = @"LoadingCell";
     _landscapeViewController = [[LandscapeViewController alloc] initWithNibName:@"LandscapeViewController" bundle:nil];
     _landscapeViewController.view.frame = self.view.bounds;
     _landscapeViewController.view.alpha = 0.0f;
-    _landscapeViewController.searchResults = _searchResults;
+    _landscapeViewController.search = _search;
     
     [self.view addSubview:_landscapeViewController.view];
     [self addChildViewController:_landscapeViewController];
@@ -117,7 +107,7 @@ static NSString * const LoadingCellIdentifier = @"LoadingCell";
       _landscapeViewController = nil;
     }];
     
-    if (!_searchResults) {
+    if (!_search.searchResults) {
       [self.searchBar becomeFirstResponder];
     }
   }
@@ -131,135 +121,25 @@ static NSString * const LoadingCellIdentifier = @"LoadingCell";
 
 - (void)performSearch
 {
-  if ([self.searchBar.text length]) {
-    [self.searchBar resignFirstResponder];
-    [_queue cancelAllOperations];
-    
-    _isLoading = YES;
-    [self.tableView reloadData];
-    
-    _searchResults = [NSMutableArray arrayWithCapacity:10];
-    
-    NSURL *url = [self urlWithSearchText:self.searchBar.text category:self.segmentedControl.selectedSegmentIndex];
-    NSURLRequest *request = [NSURLRequest requestWithURL:url];
-    
-    AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
-    operation.responseSerializer = [AFJSONResponseSerializer serializer];
-    
-    [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-      [self parseDictionary:responseObject];
-      [_searchResults sortUsingSelector:@selector(compareArtistName:)];
-      _isLoading = NO;
-      [self.tableView reloadData];
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-      if (operation.isCancelled) {
-        return;
-      }
-      
+  _search = [Search new];
+  NSLog(@"Allocated %@", _search);
+  
+  [_search performSearchForText:self.searchBar.text category:self.segmentedControl.selectedSegmentIndex completion:^(BOOL success) {
+    if (!success) {
       [self showNetworkError];
-      _isLoading = NO;
-      [self.tableView reloadData];
-    }];
-    
-    [_queue addOperation:operation];
-  }
+    }
+    [self.tableView reloadData];
+  }];
+  
+  [self.tableView reloadData];
+  [self.searchBar resignFirstResponder];
 }
 
 - (IBAction)segmentChanged:(UISegmentedControl *)sender
 {
-  if (_searchResults) {
+  if (_search) {
     [self performSearch];
   }
-}
-
-- (void)parseDictionary:(NSDictionary *)dictionary
-{
-  NSArray *array = dictionary[@"results"];
-  
-  if (!array) {
-    NSLog(@"Expected 'results' array");
-    return;
-  }
-  
-  for (NSDictionary *resultDict in array) {
-    SearchResult *searchResult;
-    NSString *wrapperType = resultDict[@"wrapperType"];
-    NSString *kind = resultDict[@"kind"];
-    
-    if ([wrapperType isEqualToString:@"track"]) {
-      searchResult = [self parseTrack:resultDict];
-    } else if ([wrapperType isEqualToString:@"audiobook"]) {
-      searchResult = [self parseAudioBook:resultDict];
-    } else if ([wrapperType isEqualToString:@"software"]) {
-      searchResult = [self parseSoftware:resultDict];
-    } else if ([kind isEqualToString:@"ebook"]) {
-      searchResult = [self parseEBook:resultDict];
-    }
-    
-    if (searchResult) {
-      [_searchResults addObject:searchResult];
-    }
-  }
-}
-
-- (SearchResult *)parseTrack:(NSDictionary *)dictionary
-{
-  SearchResult *searchResult = [SearchResult new];
-  searchResult.name = dictionary[@"trackName"];
-  searchResult.artistName = dictionary[@"artistName"];
-  searchResult.artworkURL60 = dictionary[@"artworkUrl60"];
-  searchResult.artworkURL100 = dictionary[@"artworkUrl100"];
-  searchResult.storeURL = dictionary[@"trackViewUrl"];
-  searchResult.kind = dictionary[@"kind"];
-  searchResult.price = dictionary[@"trackPrice"];
-  searchResult.currency = dictionary[@"currency"];
-  searchResult.genre = dictionary[@"primaryGenreName"];
-  return searchResult;
-}
-
-- (SearchResult *)parseAudioBook:(NSDictionary *)dictionary
-{
-  SearchResult *searchResult = [SearchResult new];
-  searchResult.name = dictionary[@"collectionName"];
-  searchResult.artistName = dictionary[@"artistName"];
-  searchResult.artworkURL60 = dictionary[@"artworkUrl60"];
-  searchResult.artworkURL100 = dictionary[@"artworkUrl100"];
-  searchResult.storeURL = dictionary[@"collectionViewUrl"];
-  searchResult.kind = @"audiobook";
-  searchResult.price = dictionary[@"collectionPrice"];
-  searchResult.currency = dictionary[@"currency"];
-  searchResult.genre = dictionary[@"primaryGenreName"];
-  return searchResult;
-}
-
-- (SearchResult *)parseSoftware:(NSDictionary *)dictionary
-{
-  SearchResult *searchResult = [SearchResult new];
-  searchResult.name = dictionary[@"trackName"];
-  searchResult.artistName = dictionary[@"artistName"];
-  searchResult.artworkURL60 = dictionary[@"artworkUrl60"];
-  searchResult.artworkURL100 = dictionary[@"artworkUrl100"];
-  searchResult.storeURL = dictionary[@"trackViewUrl"];
-  searchResult.kind = dictionary[@"kind"];
-  searchResult.price = dictionary[@"price"];
-  searchResult.currency = dictionary[@"currency"];
-  searchResult.genre = dictionary[@"primaryGenreName"];
-  return searchResult;
-}
-
-- (SearchResult *)parseEBook:(NSDictionary *)dictionary
-{
-  SearchResult *searchResult = [SearchResult new];
-  searchResult.name = dictionary[@"trackName"];
-  searchResult.artistName = dictionary[@"artistName"];
-  searchResult.artworkURL60 = dictionary[@"artworkUrl60"];
-  searchResult.artworkURL100 = dictionary[@"artworkUrl100"];
-  searchResult.storeURL = dictionary[@"trackViewUrl"];
-  searchResult.kind = dictionary[@"kind"];
-  searchResult.price = dictionary[@"price"];
-  searchResult.currency = dictionary[@"currency"];
-  searchResult.genre = [(NSArray *)dictionary[@"genres"] componentsJoinedByString:@", "];
-  return searchResult;
 }
 
 - (void)showNetworkError
@@ -272,29 +152,29 @@ static NSString * const LoadingCellIdentifier = @"LoadingCell";
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-  if (_isLoading) {
-    return 1;
-  } else if (_searchResults == nil) {
+  if (!_search) {
     return 0;
-  } else if ([_searchResults count] == 0) {
+  } else if (_search.isLoading) {
+    return 1;
+  } else if ([_search.searchResults count] == 0) {
     return 1;
   } else {
-    return [_searchResults count];
+    return [_search.searchResults count];
   }
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-  if (_isLoading) {
+  if (_search.isLoading) {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:LoadingCellIdentifier forIndexPath:indexPath];
     UIActivityIndicatorView *spinner = (UIActivityIndicatorView *)[cell viewWithTag:100];
     [spinner startAnimating];
     return cell;
-  } else if ([_searchResults count] == 0) {
+  } else if ([_search.searchResults count] == 0) {
     return [tableView dequeueReusableCellWithIdentifier:NothingFoundCellIdentifier forIndexPath:indexPath];
   } else {
     SearchResultCell *cell = (SearchResultCell *)[tableView dequeueReusableCellWithIdentifier:SearchResultCellIdentifier forIndexPath:indexPath];
-    SearchResult *searchResult = _searchResults[indexPath.row];
+    SearchResult *searchResult = _search.searchResults[indexPath.row];
     [cell configureForSearchResult:searchResult];
     return cell;
   }
@@ -304,7 +184,7 @@ static NSString * const LoadingCellIdentifier = @"LoadingCell";
 
 - (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-  if ([_searchResults count] == 0 || _isLoading) {
+  if ([_search.searchResults count] == 0 || _search.isLoading) {
   return nil;
   } else {
   return  indexPath;
@@ -318,27 +198,9 @@ static NSString * const LoadingCellIdentifier = @"LoadingCell";
   
   _detailViewController = [[DetailViewController alloc] initWithNibName:@"DetailViewController" bundle:nil];
   
-  _detailViewController.searchResult = _searchResults[indexPath.row];
+  _detailViewController.searchResult = _search.searchResults[indexPath.row];
   
   [_detailViewController presentInParentViewController:self];
-}
-
-- (NSURL *)urlWithSearchText:(NSString *)searchText category:(NSInteger)category
-{
-  NSString *categoryName;
-  
-  switch (category) {
-    case 0: categoryName = @""; break;
-    case 1: categoryName = @"musicTrack"; break;
-    case 2: categoryName = @"software"; break;
-    case 3: categoryName = @"ebook"; break;
-  }
-  
-  NSString *escapedSearchText = [searchText stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-  NSString *urlString = [NSString stringWithFormat:@"http://itunes.apple.com/search?term=%@&limit=200&entity=%@", escapedSearchText, categoryName];
-  NSLog(@"urlString: %@", urlString);
-  NSURL *url = [NSURL URLWithString:urlString];
-  return url;
 }
 
 #pragma mark - UISearchBarDelegate

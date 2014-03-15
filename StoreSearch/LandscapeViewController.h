@@ -8,8 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
+@class Search;
+
 @interface LandscapeViewController : UIViewController
 
-@property (strong, nonatomic) NSArray *searchResults;
+@property (strong, nonatomic) Search *search;
 
 @end
