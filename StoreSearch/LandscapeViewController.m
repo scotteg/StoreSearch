@@ -8,6 +8,8 @@
 
 #import "LandscapeViewController.h"
 #import "SearchResult.h"
+#import <AFNetworking/UIButton+AFNetworking.h>
+#import "UIImage+Resize.h"
 
 @interface LandscapeViewController () <UIScrollViewDelegate>
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
@@ -55,6 +57,25 @@
 - (void)dealloc
 {
   NSLog(@"%s", __PRETTY_FUNCTION__);
+  
+  for (UIButton *button in self.scrollView.subviews) {
+    [button cancelImageRequestOperation];
+  }
+}
+
+- (void)downloadImageForSearchResult:(SearchResult *)searchResult andPlaceOnButton:(UIButton *)button
+{
+  NSURL *url = [NSURL URLWithString:searchResult.artworkURL60];
+  
+  NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
+  [request addValue:@"image/*" forHTTPHeaderField:@"Accept"];
+  
+  __weak UIButton *weakButton = button;
+  [button setImageForState:UIControlStateNormal withURLRequest:request placeholderImage:nil success:^(NSHTTPURLResponse *response, UIImage *image) {
+    UIImage *unscaledImage = [UIImage imageWithCGImage:image.CGImage scale:1.0f orientation:image.imageOrientation];
+    UIImage *resizedImage = [unscaledImage resizedImageWithBounds:CGSizeMake(60.0f, 60.0f)];
+    [weakButton setImage:resizedImage forState:UIControlStateNormal];
+  } failure:nil];
 }
 
 - (IBAction)pageChanged:(UIPageControl *)sender
@@ -88,13 +109,14 @@
   NSUInteger index = 0;
   NSUInteger row = 0;
   NSUInteger column = 0;
-  NSUInteger searchResultsCount = [self.searchResults count];
   
-  for (NSUInteger i = 0; i < searchResultsCount; i++) {
-    UIButton *button = [UIButton buttonWithType:UIButtonTypeSystem];
-    button.backgroundColor = [UIColor whiteColor];
-    [button setTitle:[NSString stringWithFormat:@"%d", index] forState:UIControlStateNormal];
+  for (SearchResult *searchResult in self.searchResults) {
+    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+    [button setBackgroundImage:[UIImage imageNamed:@"LandscapeButton"] forState:UIControlStateNormal];
     button.frame = CGRectMake(x + marginHorz, 20.0f + marginVert + row * itemHeight, buttonWidth, buttonHeight);
+    
+    [self downloadImageForSearchResult:searchResult andPlaceOnButton:button];
+    
     [self.scrollView addSubview:button];
     
     index++;
@@ -113,9 +135,11 @@
   }
   
   NSUInteger tilesPerPage = columnsPerPage * 3;
-  NSUInteger numPages = ceilf(searchResultsCount / (CGFloat)tilesPerPage);
+  NSUInteger numPages = ceilf([self.searchResults count] / (CGFloat)tilesPerPage);
   self.scrollView.contentSize = CGSizeMake(numPages * scrollViewWidth, CGRectGetHeight(self.scrollView.bounds));
+  
   NSLog(@"Number of pages: %d", numPages);
+  
   self.pageControl.numberOfPages = numPages;
   self.pageControl.currentPage = 0;
 }

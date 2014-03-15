@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		6BF461EC2DDE4DE8AD0FBD26 /* libPods-StoreSearch.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9ABF24F3028341989CA7ED8A /* libPods-StoreSearch.a */; };
+		D26FA86318D4C41B006EF23D /* UIImage+Resize.m in Sources */ = {isa = PBXBuildFile; fileRef = D26FA86218D4C41B006EF23D /* UIImage+Resize.m */; };
 		D2B2D69B18D0DB84007E64ED /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2B2D69A18D0DB84007E64ED /* Foundation.framework */; };
 		D2B2D69D18D0DB84007E64ED /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2B2D69C18D0DB84007E64ED /* CoreGraphics.framework */; };
 		D2B2D69F18D0DB84007E64ED /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2B2D69E18D0DB84007E64ED /* UIKit.framework */; };
@@ -46,6 +47,8 @@
 
 /* Begin PBXFileReference section */
 		9ABF24F3028341989CA7ED8A /* libPods-StoreSearch.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-StoreSearch.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		D26FA86118D4C41B006EF23D /* UIImage+Resize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Resize.h"; sourceTree = "<group>"; };
+		D26FA86218D4C41B006EF23D /* UIImage+Resize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Resize.m"; sourceTree = "<group>"; };
 		D2B2D69718D0DB84007E64ED /* StoreSearch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StoreSearch.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D2B2D69A18D0DB84007E64ED /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		D2B2D69C18D0DB84007E64ED /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -165,6 +168,8 @@
 				D2B2D6D018D0F5E7007E64ED /* SearchViewController.m */,
 				D2B2D6D118D0F5E7007E64ED /* SearchViewController.xib */,
 				D2B2D6A118D0DB84007E64ED /* Supporting Files */,
+				D26FA86118D4C41B006EF23D /* UIImage+Resize.h */,
+				D26FA86218D4C41B006EF23D /* UIImage+Resize.m */,
 			);
 			path = StoreSearch;
 			sourceTree = "<group>";
@@ -340,6 +345,7 @@
 				D2B2D6DB18D11F33007E64ED /* SearchResultCell.m in Sources */,
 				D2B2D6D618D117D0007E64ED /* SearchResult.m in Sources */,
 				D2B2D6A718D0DB84007E64ED /* main.m in Sources */,
+				D26FA86318D4C41B006EF23D /* UIImage+Resize.m in Sources */,
 				D2C6DAF518D37F9F00D0729B /* GradientView.m in Sources */,
 				D2C6DAF918D39DF000D0729B /* LandscapeViewController.m in Sources */,
 				D2C6DAF118D3432800D0729B /* DetailViewController.m in Sources */,
