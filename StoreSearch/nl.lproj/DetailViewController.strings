@@ -1,0 +1,21 @@
+/* Class = "IBUILabel"; text = "Type:"; ObjectID = "TQ5-NA-Rao"; */
+"TQ5-NA-Rao.text" = "Soort:";
+
+// Does not need translation:
+///* Class = "IBUIButton"; normalTitle = "$9.99"; ObjectID = "0bn-Bo-P3Q"; */
+//"0bn-Bo-P3Q.normalTitle" = "$9.99";
+//
+///* Class = "IBUILabel"; text = "Genre:"; ObjectID = "4Z4-PS-3Yv"; */
+//"4Z4-PS-3Yv.text" = "Genre:";
+//
+///* Class = "IBUILabel"; text = "Kind value"; ObjectID = "QZf-Xh-FZQ"; */
+//"QZf-Xh-FZQ.text" = "Kind value";
+//
+///* Class = "IBUILabel"; text = "Artist Name"; ObjectID = "Wxw-6p-4fE"; */
+//"Wxw-6p-4fE.text" = "Artist Name";
+//
+///* Class = "IBUILabel"; text = "Name"; ObjectID = "efv-ZP-r3Q"; */
+//"efv-ZP-r3Q.text" = "Name";
+//
+///* Class = "IBUILabel"; text = "Genre value"; ObjectID = "ryI-d8-8wz"; */
+//"ryI-d8-8wz.text" = "Genre value";

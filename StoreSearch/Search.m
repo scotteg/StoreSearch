@@ -31,7 +31,7 @@ static NSOperationQueue *queue = nil;
   NSLog(@"%s", __PRETTY_FUNCTION__);
 }
 
-- (void)performSearchForText:(NSString *)text category:(NSInteger)category completion:(SearchBlock)block;
+- (void)performSearchForText:(NSString *)text category:(NSInteger)category completion:(SearchBlock)block
 {
   if ([text length]) {
     [queue cancelAllOperations];
