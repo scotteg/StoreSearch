@@ -16,6 +16,7 @@
 		D295C3E818D509ED0073CC1A /* DetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D295C3EA18D509ED0073CC1A /* DetailViewController.xib */; };
 		D295C3ED18D50BA20073CC1A /* LandscapeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D295C3EF18D50BA20073CC1A /* LandscapeViewController.xib */; };
 		D295C3F218D50BB50073CC1A /* SearchResultCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D295C3F418D50BB50073CC1A /* SearchResultCell.xib */; };
+		D295C3F918D5C08C0073CC1A /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = D295C3F718D5C08C0073CC1A /* Localizable.strings */; };
 		D2B2D69B18D0DB84007E64ED /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2B2D69A18D0DB84007E64ED /* Foundation.framework */; };
 		D2B2D69D18D0DB84007E64ED /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2B2D69C18D0DB84007E64ED /* CoreGraphics.framework */; };
 		D2B2D69F18D0DB84007E64ED /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2B2D69E18D0DB84007E64ED /* UIKit.framework */; };
@@ -64,6 +65,8 @@
 		D295C3F118D50BAA0073CC1A /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/LandscapeViewController.strings; sourceTree = "<group>"; };
 		D295C3F318D50BB50073CC1A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/SearchResultCell.xib; sourceTree = "<group>"; };
 		D295C3F618D50BBB0073CC1A /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/SearchResultCell.strings; sourceTree = "<group>"; };
+		D295C3F818D5C08C0073CC1A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		D295C3FA18D5C1120073CC1A /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/Localizable.strings; sourceTree = "<group>"; };
 		D2B2D69718D0DB84007E64ED /* StoreSearch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StoreSearch.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D2B2D69A18D0DB84007E64ED /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		D2B2D69C18D0DB84007E64ED /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -188,6 +191,7 @@
 		D2B2D6A118D0DB84007E64ED /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				D295C3F718D5C08C0073CC1A /* Localizable.strings */,
 				D2B2D6A218D0DB84007E64ED /* StoreSearch-Info.plist */,
 				D2B2D6A318D0DB84007E64ED /* InfoPlist.strings */,
 				D2B2D6A618D0DB84007E64ED /* main.m */,
@@ -297,6 +301,7 @@
 				D2B2D6A518D0DB84007E64ED /* InfoPlist.strings in Resources */,
 				D295C3E818D509ED0073CC1A /* DetailViewController.xib in Resources */,
 				D295C3DE18D506EF0073CC1A /* LoadingCell.xib in Resources */,
+				D295C3F918D5C08C0073CC1A /* Localizable.strings in Resources */,
 				D295C3F218D50BB50073CC1A /* SearchResultCell.xib in Resources */,
 				D295C3D918D5049E0073CC1A /* NothingFoundCell.xib in Resources */,
 				D295C3ED18D50BA20073CC1A /* LandscapeViewController.xib in Resources */,
@@ -436,6 +441,15 @@
 				D295C3F618D50BBB0073CC1A /* nl */,
 			);
 			name = SearchResultCell.xib;
+			sourceTree = "<group>";
+		};
+		D295C3F718D5C08C0073CC1A /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				D295C3F818D5C08C0073CC1A /* en */,
+				D295C3FA18D5C1120073CC1A /* nl */,
+			);
+			name = Localizable.strings;
 			sourceTree = "<group>";
 		};
 		D2B2D6A318D0DB84007E64ED /* InfoPlist.strings */ = {
