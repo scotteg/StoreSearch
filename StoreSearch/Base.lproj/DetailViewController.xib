@@ -8,6 +8,7 @@
             <connections>
                 <outlet property="artistNameLabel" destination="Wxw-6p-4fE" id="EBl-3X-OHI"/>
                 <outlet property="artworkImageView" destination="Fzq-le-FiU" id="pJO-UH-cmP"/>
+                <outlet property="closeButton" destination="XEP-tz-mIg" id="lKh-7G-6sf"/>
                 <outlet property="genreLabel" destination="ryI-d8-8wz" id="8Sh-aK-5fs"/>
                 <outlet property="kindLabel" destination="QZf-Xh-FZQ" id="kik-7g-pVZ"/>
                 <outlet property="nameLabel" destination="efv-ZP-r3Q" id="wHs-4d-M9Q"/>

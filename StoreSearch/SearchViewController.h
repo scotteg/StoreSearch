@@ -8,6 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
+@class DetailViewController;
+
 @interface SearchViewController : UIViewController
+
+@property (weak, nonatomic) DetailViewController *detailViewController;
 
 @end

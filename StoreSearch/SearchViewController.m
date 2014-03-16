@@ -29,7 +29,6 @@ static NSString * const LoadingCellIdentifier = @"LoadingCell";
   Search *_search;
   LandscapeViewController *_landscapeViewController;
   UIStatusBarStyle _statusBarStyle;
-  DetailViewController *_detailViewController;
 }
 
 - (void)viewDidLoad
@@ -46,7 +45,9 @@ static NSString * const LoadingCellIdentifier = @"LoadingCell";
   cellNib = [UINib nibWithNibName:LoadingCellIdentifier bundle:nil];
   [self.tableView registerNib:cellNib forCellReuseIdentifier:LoadingCellIdentifier];
   
-  [self.searchBar becomeFirstResponder];
+  if (UI_USER_INTERFACE_IDIOM() != UIUserInterfaceIdiomPad) {
+    [self.searchBar becomeFirstResponder];
+  }
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle
@@ -58,10 +59,12 @@ static NSString * const LoadingCellIdentifier = @"LoadingCell";
 {
   [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
   
-  if (UIInterfaceOrientationIsPortrait(toInterfaceOrientation)) {
-    [self hideLandscapeViewWithDuration:duration];
-  } else {
-    [self showLandscapeViewWithDuration:duration];
+  if (UI_USER_INTERFACE_IDIOM() != UIUserInterfaceIdiomPad) {
+    if (UIInterfaceOrientationIsPortrait((toInterfaceOrientation))) {
+      [self hideLandscapeViewWithDuration:duration];
+    } else {
+      [self showLandscapeViewWithDuration:duration];
+    }
   }
 }
 
@@ -86,8 +89,8 @@ static NSString * const LoadingCellIdentifier = @"LoadingCell";
     }];
     
     [self.searchBar resignFirstResponder];
-    [_detailViewController dismissFromParentViewControllerWithAnimationType:DetailViewControllerAnimationTypeFade];
-    _detailViewController = nil;
+    [self.detailViewController dismissFromParentViewControllerWithAnimationType:DetailViewControllerAnimationTypeFade];
+    self.detailViewController = nil;
   }
 }
 
@@ -108,7 +111,9 @@ static NSString * const LoadingCellIdentifier = @"LoadingCell";
     }];
     
     if (!_search.searchResults) {
-      [self.searchBar becomeFirstResponder];
+      if (UI_USER_INTERFACE_IDIOM() != UIUserInterfaceIdiomPad) {
+        [self.searchBar becomeFirstResponder];
+      }
     }
   }
 }
@@ -188,13 +193,18 @@ static NSString * const LoadingCellIdentifier = @"LoadingCell";
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
   [self.searchBar resignFirstResponder];
-  [tableView deselectRowAtIndexPath:indexPath animated:YES];
   
-  _detailViewController = [[DetailViewController alloc] initWithNibName:@"DetailViewController" bundle:nil];
+  SearchResult *searchResult = _search.searchResults[indexPath.row];
   
-  _detailViewController.searchResult = _search.searchResults[indexPath.row];
-  
-  [_detailViewController presentInParentViewController:self];
+  if (UI_USER_INTERFACE_IDIOM() != UIUserInterfaceIdiomPad) {
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    DetailViewController *controller = [[DetailViewController alloc] initWithNibName:@"DetailViewController" bundle:nil];
+    controller.searchResult = searchResult;
+    [controller presentInParentViewController:self];
+    self.detailViewController = controller;
+  } else {
+    self.detailViewController.searchResult = searchResult;
+  }
 }
 
 #pragma mark - UISearchBarDelegate

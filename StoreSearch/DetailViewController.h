@@ -15,7 +15,7 @@ typedef NS_ENUM(NSUInteger, DetailViewControllerAnimationType) {
   DetailViewControllerAnimationTypeFade
 };
 
-@interface DetailViewController : UIViewController
+@interface DetailViewController : UIViewController <UISplitViewControllerDelegate>
 
 @property (strong, nonatomic) SearchResult *searchResult;
 
