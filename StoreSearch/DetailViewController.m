@@ -12,7 +12,6 @@
 #import "GradientView.h"
 
 @interface DetailViewController () <UIGestureRecognizerDelegate>
-@property (weak, nonatomic) IBOutlet UIView *popupView;
 @property (weak, nonatomic) IBOutlet UIImageView *artworkImageView;
 @property (weak, nonatomic) IBOutlet UILabel *nameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *artistNameLabel;
@@ -50,7 +49,7 @@
   
   if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
     self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"LandscapeBackground"]];
-    self.closeButton.hidden = YES;
+    
     self.popupView.hidden = !self.searchResult;
     self.title = [[[NSBundle mainBundle] localizedInfoDictionary] objectForKey:@"CFBundleDisplayName"];
   } else {

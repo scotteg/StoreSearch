@@ -29,6 +29,7 @@ static NSString * const LoadingCellIdentifier = @"LoadingCell";
   Search *_search;
   LandscapeViewController *_landscapeViewController;
   UIStatusBarStyle _statusBarStyle;
+  BOOL _firstDisplayOfDetail;
 }
 
 - (void)viewDidLoad
@@ -37,6 +38,7 @@ static NSString * const LoadingCellIdentifier = @"LoadingCell";
   self.tableView.contentInset = UIEdgeInsetsMake(108.0f, 0.0f, 0.0f, 0.0f); // Search bar 64pt, segmented control 44pt
   self.tableView.rowHeight = 80.0f;
   _statusBarStyle = UIStatusBarStyleDefault;
+  _firstDisplayOfDetail = YES;
   
   UINib *cellNib = [UINib nibWithNibName:SearchResultCellIdentifier bundle:nil];
   [self.tableView registerNib:cellNib forCellReuseIdentifier:SearchResultCellIdentifier];
@@ -203,6 +205,17 @@ static NSString * const LoadingCellIdentifier = @"LoadingCell";
     [controller presentInParentViewController:self];
     self.detailViewController = controller;
   } else {
+    if (_firstDisplayOfDetail) {
+      _firstDisplayOfDetail = NO;
+      
+      CGPoint destinationCenter = self.detailViewController.popupView.center;
+      
+      self.detailViewController.popupView.center = CGPointMake(CGRectGetMidX(self.detailViewController.view.frame), CGRectGetMaxY(self.detailViewController.view.frame) + CGRectGetHeight(self.detailViewController.popupView.bounds));
+      
+      [UIView animateWithDuration:0.3 animations:^{
+        self.detailViewController.popupView.center = destinationCenter;
+      }];
+    }
     self.detailViewController.searchResult = searchResult;
   }
 }
