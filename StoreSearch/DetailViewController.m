@@ -10,8 +10,9 @@
 #import "SearchResult.h"
 #import <AFNetworking/UIImageView+AFNetworking.h>
 #import "GradientView.h"
+#import "MenuViewController.h"
 
-@interface DetailViewController () <UIGestureRecognizerDelegate>
+@interface DetailViewController () <UIGestureRecognizerDelegate, MFMailComposeViewControllerDelegate>
 @property (weak, nonatomic) IBOutlet UIImageView *artworkImageView;
 @property (weak, nonatomic) IBOutlet UILabel *nameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *artistNameLabel;
@@ -20,6 +21,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *priceButton;
 @property (strong, nonatomic) UIPopoverController *masterPopoverController;
 @property (weak, nonatomic) IBOutlet UIButton *closeButton;
+@property (strong, nonatomic) UIPopoverController *menuPopoverController;
 @end
 
 @implementation DetailViewController
@@ -52,6 +54,7 @@
     
     self.popupView.hidden = !self.searchResult;
     self.title = [[[NSBundle mainBundle] localizedInfoDictionary] objectForKey:@"CFBundleDisplayName"];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(menuButtonPressed:)];
   } else {
     self.view.backgroundColor = [UIColor clearColor];
     
@@ -63,6 +66,43 @@
   
   if (self.searchResult) {
     [self updateUI];
+  }
+}
+
+- (void)didReceiveMemoryWarning
+{
+  [super didReceiveMemoryWarning];
+  // Dispose of any resources that can be recreated.
+}
+
+- (void)dealloc
+{
+  NSLog(@"%s", __PRETTY_FUNCTION__);
+  [self.artworkImageView cancelImageRequestOperation];
+}
+
+- (void)setSearchResult:(SearchResult *)searchResult
+{
+  if (_searchResult != searchResult) {
+    _searchResult = searchResult;
+    
+    if ([self isViewLoaded]) { // View will not be loaded on iPhone
+      [self updateUI];
+    }
+  }
+}
+
+- (void)sendSupportEmail
+{
+  [self.menuPopoverController dismissPopoverAnimated:YES];
+  MFMailComposeViewController *controller = [MFMailComposeViewController new];
+  
+  if (controller) {
+    controller.mailComposeDelegate = self;
+    controller.modalPresentationStyle = UIModalPresentationFormSheet;
+    [controller setSubject:NSLocalizedString(@"Support Request", @"Email Subject")];
+    [controller setToRecipients:@[@"scott.gardner@mac.com"]];
+    [self presentViewController:controller animated:YES completion:nil];
   }
 }
 
@@ -103,27 +143,26 @@
   }
 }
 
-- (void)didReceiveMemoryWarning
+- (void)menuButtonPressed:(UIBarButtonItem *)sender
 {
-  [super didReceiveMemoryWarning];
-  // Dispose of any resources that can be recreated.
-}
-
-- (void)dealloc
-{
-  NSLog(@"%s", __PRETTY_FUNCTION__);
-  [self.artworkImageView cancelImageRequestOperation];
-}
-
-- (void)setSearchResult:(SearchResult *)searchResult
-{
-  if (_searchResult != searchResult) {
-    _searchResult = searchResult;
-    
-    if ([self isViewLoaded]) { // View will not be loaded on iPhone
-      [self updateUI];
-    }
+  if ([self.menuPopoverController isPopoverVisible]) {
+    [self.menuPopoverController dismissPopoverAnimated:YES];
+  } else {
+    [self.menuPopoverController presentPopoverFromBarButtonItem:sender permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
   }
+}
+
+- (UIPopoverController *)menuPopoverController
+{
+  if (!_menuPopoverController) {
+    MenuViewController *menuViewController = [[MenuViewController alloc] initWithStyle:UITableViewStyleGrouped];
+    
+    menuViewController.detailViewController = self;
+    
+    _menuPopoverController = [[UIPopoverController alloc] initWithContentViewController:menuViewController];
+  }
+  
+  return _menuPopoverController;
 }
 
 - (IBAction)close:(id)sender
@@ -209,6 +248,20 @@
 {
   [self.navigationItem setLeftBarButtonItem:nil animated:YES];
   self.masterPopoverController = nil;
+}
+
+- (void)splitViewController:(UISplitViewController *)svc popoverController:(UIPopoverController *)pc willPresentViewController:(UIViewController *)aViewController
+{
+  if ([self.menuPopoverController isPopoverVisible]) {
+    [self.menuPopoverController dismissPopoverAnimated:YES];
+  }
+}
+
+#pragma mark - MFMailComposeViewControllerDelegate
+
+- (void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
+{
+  [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 @end

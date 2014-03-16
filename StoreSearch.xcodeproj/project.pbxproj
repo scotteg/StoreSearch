@@ -18,6 +18,7 @@
 		D295C3F218D50BB50073CC1A /* SearchResultCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D295C3F418D50BB50073CC1A /* SearchResultCell.xib */; };
 		D295C3F918D5C08C0073CC1A /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = D295C3F718D5C08C0073CC1A /* Localizable.strings */; };
 		D295C3FE18D5EA650073CC1A /* DetailViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = D295C3FC18D5EA650073CC1A /* DetailViewController~ipad.xib */; };
+		D295C40318D60BB20073CC1A /* MenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D295C40218D60BB20073CC1A /* MenuViewController.m */; };
 		D2B2D69B18D0DB84007E64ED /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2B2D69A18D0DB84007E64ED /* Foundation.framework */; };
 		D2B2D69D18D0DB84007E64ED /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2B2D69C18D0DB84007E64ED /* CoreGraphics.framework */; };
 		D2B2D69F18D0DB84007E64ED /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2B2D69E18D0DB84007E64ED /* UIKit.framework */; };
@@ -71,6 +72,8 @@
 		D295C3FB18D5CAC90073CC1A /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		D295C3FD18D5EA650073CC1A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = "Base.lproj/DetailViewController~ipad.xib"; sourceTree = "<group>"; };
 		D295C40018D5ED3E0073CC1A /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = "nl.lproj/DetailViewController~ipad.strings"; sourceTree = "<group>"; };
+		D295C40118D60BB20073CC1A /* MenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuViewController.h; sourceTree = "<group>"; };
+		D295C40218D60BB20073CC1A /* MenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuViewController.m; sourceTree = "<group>"; };
 		D2B2D69718D0DB84007E64ED /* StoreSearch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StoreSearch.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D2B2D69A18D0DB84007E64ED /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		D2B2D69C18D0DB84007E64ED /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -175,6 +178,8 @@
 				D2C6DAF718D39DF000D0729B /* LandscapeViewController.m */,
 				D295C3EF18D50BA20073CC1A /* LandscapeViewController.xib */,
 				D295C3E018D506EF0073CC1A /* LoadingCell.xib */,
+				D295C40118D60BB20073CC1A /* MenuViewController.h */,
+				D295C40218D60BB20073CC1A /* MenuViewController.m */,
 				D295C3DB18D5049E0073CC1A /* NothingFoundCell.xib */,
 				D26FA86418D4C6DB006EF23D /* Search.h */,
 				D26FA86518D4C6DB006EF23D /* Search.m */,
@@ -372,6 +377,7 @@
 				D2C6DAF518D37F9F00D0729B /* GradientView.m in Sources */,
 				D26FA86618D4C6DB006EF23D /* Search.m in Sources */,
 				D2C6DAF918D39DF000D0729B /* LandscapeViewController.m in Sources */,
+				D295C40318D60BB20073CC1A /* MenuViewController.m in Sources */,
 				D2C6DAF118D3432800D0729B /* DetailViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
