@@ -67,6 +67,7 @@
 		D295C3F618D50BBB0073CC1A /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/SearchResultCell.strings; sourceTree = "<group>"; };
 		D295C3F818D5C08C0073CC1A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		D295C3FA18D5C1120073CC1A /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/Localizable.strings; sourceTree = "<group>"; };
+		D295C3FB18D5CAC90073CC1A /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		D2B2D69718D0DB84007E64ED /* StoreSearch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StoreSearch.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D2B2D69A18D0DB84007E64ED /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		D2B2D69C18D0DB84007E64ED /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -456,6 +457,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				D2B2D6A418D0DB84007E64ED /* en */,
+				D295C3FB18D5CAC90073CC1A /* nl */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
